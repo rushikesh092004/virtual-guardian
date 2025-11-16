@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #f4f7fa;
+  font-family: "Poppins", sans-serif;
+}
+
+.page {
+  padding: 25px;
+}

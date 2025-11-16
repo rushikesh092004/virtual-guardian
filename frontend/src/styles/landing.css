@@ -1,0 +1,83 @@
+/* Full page background */
+.landing-wrapper {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #4b79a1, #283e51);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The card */
+.landing-card {
+  width: 380px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Title */
+.landing-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #283e51;
+  margin-bottom: 10px;
+}
+
+/* Subtitle */
+.landing-subtitle {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* Button container */
+.landing-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 12px;
+  background: #4b79a1;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #35516a;
+}
+
+.btn-secondary {
+  padding: 12px;
+  background: #283e51;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #16242e;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

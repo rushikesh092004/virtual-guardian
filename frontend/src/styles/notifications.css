@@ -1,0 +1,58 @@
+.notify-wrapper {
+  background: linear-gradient(135deg, #204070, #305c90);
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.notify-card {
+  background: white;
+  width: 520px;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.notify-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.notify-item {
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.notify-header {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.notify-desc {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.notify-time {
+  font-size: 12px;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+/* Color Types */
+.danger {
+  background: #e63946;
+}
+
+.info {
+  background: #457b9d;
+}
+
+.success {
+  background: #2a9d8f;
+}

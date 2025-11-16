@@ -1,0 +1,95 @@
+.profile-wrapper {
+  background: linear-gradient(135deg, #204070, #305c90);
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  background: white;
+  width: 480px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.profile-image-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.profile-image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid #1e3c72;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.profile-email,
+.profile-phone {
+  color: #555;
+  margin: 5px 0;
+}
+
+.profile-info-box {
+  background: #eef4ff;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.status-box {
+  margin-top: 25px;
+}
+
+.status-box h3 {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.status {
+  padding: 8px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.safe {
+  background: #2a9d8f;
+  color: white;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+}
+
+.stat-item {
+  background: #eef4ff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-align: center;
+  width: 100px;
+}
+
+.stat-item h4 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.stat-item p {
+  font-size: 13px;
+  color: #555;
+}
