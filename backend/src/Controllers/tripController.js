@@ -1,3 +1,5 @@
+// src/Controllers/tripController.js
+
 // Simple in-memory "database"
 let trips = [];
 let nextId = 1;
@@ -9,7 +11,7 @@ exports.createTrip = async (req, res) => {
 
     if (!title || !durationMinutes) {
       return res.status(400).json({
-        message: 'title and durationMinutes are required',
+        message: "title and durationMinutes are required",
       });
     }
 
@@ -19,7 +21,7 @@ exports.createTrip = async (req, res) => {
     const newTrip = {
       id: nextId++,
       title,
-      status: 'started',
+      status: "started",
       startedAt: now,
       expiresAt,
       contacts: contacts || [],
@@ -29,12 +31,12 @@ exports.createTrip = async (req, res) => {
     trips.push(newTrip);
 
     return res.status(201).json({
-      message: 'Trip created (in-memory)',
+      message: "Trip created (in-memory)",
       trip: newTrip,
     });
   } catch (err) {
-    console.error('Error in createTrip:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error in createTrip:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -42,12 +44,12 @@ exports.createTrip = async (req, res) => {
 exports.getTrips = async (req, res) => {
   try {
     return res.json({
-      message: 'Trips fetched (in-memory)',
+      message: "Trips fetched (in-memory)",
       trips,
     });
   } catch (err) {
-    console.error('Error in getTrips:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error in getTrips:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -59,17 +61,17 @@ exports.markSafe = async (req, res) => {
 
     const trip = trips.find((t) => t.id === tripId);
     if (!trip) {
-      return res.status(404).json({ message: 'Trip not found' });
+      return res.status(404).json({ message: "Trip not found" });
     }
 
-    trip.status = 'safe';
+    trip.status = "safe";
 
     return res.json({
       message: `Trip ${id} marked safe (in-memory)`,
       trip,
     });
   } catch (err) {
-    console.error('Error in markSafe:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error in markSafe:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
