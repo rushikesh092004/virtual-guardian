@@ -14,7 +14,7 @@ app.use(express.json());
 
 // DB Config
 // Temporary: Skip DB until real Mongo is ready
-console.log("⚠ Skipping MongoDB Connection — Using Fake Data Mode");
+console.log("Skipping MongoDB Connection — Using Fake Data Mode");
 
 
 // Routes
