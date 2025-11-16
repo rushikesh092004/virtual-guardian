@@ -1,29 +1,31 @@
+// src/server.js
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const routes = require("./routes/tripRoutes.js");
 const { startCron } = require("./cron/checkExpiredTrips.js");
+const tripRoutes = require("./routes/tripRoutes.js");
 
 dotenv.config();
 
-
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// DB Config
-// Temporary: Skip DB until real Mongo is ready
-console.log("Skipping MongoDB Connection — Using Fake Data Mode");
+// Health route
+app.get("/health", (req, res) => {
+  res.json({ status: "OK", message: "Server is running" });
+});
 
+// Use routes
+app.use("/api/trips", tripRoutes);
 
-// Routes
-app.use("/api", routes);
-
-// Start cron job
-startCron();
+// Start cron (it will just log using fake DB for now)
+startCron && startCron();
 
 // Start server
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

@@ -1,12 +1,16 @@
-const express = require('express');
+// src/routes/tripRoutes.js
+const express = require("express");
 const router = express.Router();
 
-// This is where you import the functions
-const { createTrip, getTrips, markSafe } = require('../Controllers/tripController.js');
+const tripController = require("../Controllers/tripController.js");
 
-// Routes
-router.post('/create', createTrip);
-router.get('/all', getTrips);
-router.post('/:id/safe', markSafe);
+// Create a trip
+router.post("/create", tripController.createTrip);
+
+// Get all trips
+router.get("/all", tripController.getTrips);
+
+// Mark trip safe
+router.post("/:id/safe", tripController.markSafe);
 
 module.exports = router;
