@@ -1,0 +1,74 @@
+.register-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #4b79a1, #283e51);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-card {
+  background: white;
+  width: 420px;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+.register-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #283e51;
+}
+
+.register-sub {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.register-form input,
+.register-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.role-select {
+  background: #f7f7f7;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: #283e51;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background: #1b2837;
+}
+
+.register-footer {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.link {
+  text-decoration: none;
+  color: #1e3c72;
+  font-weight: bold;
+}
+
+.back-home {
+  display: block;
+  margin-top: 12px;
+  text-decoration: none;
+  color: #333;
+}

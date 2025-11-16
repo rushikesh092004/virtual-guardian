@@ -1,0 +1,94 @@
+.track-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  padding: 30px;
+}
+
+.track-container {
+  background: white;
+  max-width: 900px;
+  margin: auto;
+  padding: 35px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.track-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1e3c72;
+  margin-bottom: 20px;
+}
+
+/* Map Placeholder */
+.map-box {
+  background: #e8e8e8;
+  height: 350px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.map-placeholder {
+  color: #555;
+  font-size: 18px;
+}
+
+/* Coordinates Info */
+.location-info {
+  background: #f2f6fd;
+  border-left: 5px solid #1e3c72;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.note {
+  font-size: 13px;
+  color: #444;
+}
+
+/* Buttons */
+.track-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.start-btn, .stop-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+  transition: 0.3s;
+}
+
+.start-btn {
+  background: #1e3c72;
+}
+.start-btn:hover {
+  background: #14294e;
+}
+
+.stop-btn {
+  background: #c62828;
+}
+.stop-btn:hover {
+  background: #8e1c1c;
+}
+
+/* Back Button */
+.back-btn {
+  text-decoration: none;
+  color: #1e3c72;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
