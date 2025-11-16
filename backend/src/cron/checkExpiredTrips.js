@@ -6,9 +6,9 @@ const startCron = () => {
 
   cron.schedule("* * * * *", async () => {
     try {
-      console.log("🔍 Cron running... checking for fake trips");
+      console.log("Cron running... checking for fake trips");
 
-      // ⭐ FAKE EXPIRED TRIP — ALWAYS TRIGGERED
+      // FAKE EXPIRED TRIP — ALWAYS TRIGGERED
       const expiredTrips = [
         {
           _id: "TEST123",
@@ -21,9 +21,9 @@ const startCron = () => {
         }
       ];
 
-      // ⭐ Loop over fake expired trip
+      // Loop over fake expired trip
       for (let trip of expiredTrips) {
-        console.log("🚨 Found expired test trip:", trip._id);
+        console.log("Found expired test trip:", trip._id);
 
         await sendAlert(trip);
       }
