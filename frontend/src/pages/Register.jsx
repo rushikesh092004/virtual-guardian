@@ -2,19 +2,17 @@ import "./../styles/register.css";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-  
   const navigate = useNavigate();
 
-  // Function runs when clicking Register button
   const handleRegister = (e) => {
-    e.preventDefault();  // stop page refresh
-    navigate("/login");  // redirect to login page
+    e.preventDefault();
+    navigate("/login");   // Go to login after register
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
-        
+
         <h2 className="register-title">Create Account</h2>
         <p className="register-sub">Join Virtual Guardian</p>
 
@@ -24,16 +22,13 @@ export default function Register() {
           <input type="password" placeholder="Password" required />
           <input type="password" placeholder="Confirm Password" required />
 
-          {/* Role Selection */}
           <select required className="role-select">
             <option value="">Select Role</option>
             <option value="user">User</option>
             <option value="guardian">Guardian</option>
           </select>
 
-          <button className="register-btn" type="submit">
-            Register
-          </button>
+          <button className="register-btn">Register</button>
         </form>
 
         <p className="register-footer">

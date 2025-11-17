@@ -1,51 +1,26 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <div className="navbar">
-        <div className="nav-left">
-          <h3 className="nav-logo">Virtual Guardian</h3>
-        </div>
-
-        {/* Desktop Menu */}
-        <div className="nav-right desktop-menu">
-          <Link to="/user/dashboard" className="nav-item">Dashboard</Link>
-          <Link to="/profile" className="nav-item">Profile</Link>
-          <Link to="/settings" className="nav-item">Settings</Link>
-          <Link to="/history" className="nav-item">History</Link>
-          <Link to="/notifications" className="nav-item">Notifications</Link>
-        </div>
-
-        {/* Mobile Icon */}
-        <div className="hamburger" onClick={() => setOpen(true)}>
-          ☰
-        </div>
+    <nav className="nav-bar">
+      
+      <div className="nav-left">
+        <h2 className="nav-logo">Virtual Guardian</h2>
       </div>
 
-      {/* Drawer Menu */}
-      <div className={`drawer ${open ? "open" : ""}`}>
-        <div className="drawer-header">
-          <h3>Menu</h3>
-          <span className="close-btn" onClick={() => setOpen(false)}>✖</span>
-        </div>
-
-        <Link to="/user/dashboard" className="drawer-item">Dashboard</Link>
-        <Link to="/profile" className="drawer-item">Profile</Link>
-        <Link to="/settings" className="drawer-item">Settings</Link>
-        <Link to="/history" className="drawer-item">Alert History</Link>
-        <Link to="/notifications" className="drawer-item">Notifications</Link>
-        <Link to="/sos" className="drawer-item">SOS</Link>
-
-        <button className="drawer-logout">Logout</button>
+      <div className="nav-right">
+        <Link to="/user/dashboard">Dashboard</Link>
+        <Link to="/track">Tracking</Link>
+        <Link to="/sos">SOS</Link>
+        <Link to="/settings">Settings</Link>
+        <Link to="/emergency">Emergency Contacts</Link>
+        <Link to="/history">History</Link>
+        <Link to="/profile">Profile</Link>
+        <Link to="/notifications">Notifications</Link>
+        <Link to="/" className="logout-btn">Logout</Link>
       </div>
 
-      {/* Overlay */}
-      {open && <div className="overlay" onClick={() => setOpen(false)} />}
-    </>
+    </nav>
   );
 }

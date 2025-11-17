@@ -21,32 +21,25 @@ import Notifications from "./pages/Notifications";
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="page-transition"> {/* Animation wrapper */}
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Splash />} />
+        <Route path="/home" element={<Landing />} />
 
-          {/* Sequence Start */}
-          <Route path="/" element={<Splash />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-          {/* Flow screens */}
-          <Route path="/home" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        <Route path="/user/dashboard" element={<UserDashboard />} />
+        <Route path="/guardian/dashboard" element={<GuardianDashboard />} />
 
-          <Route path="/user/dashboard" element={<UserDashboard />} />
-          <Route path="/guardian/dashboard" element={<GuardianDashboard />} />
+        <Route path="/track" element={<LiveTracking />} />
+        <Route path="/sos" element={<SOS />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/emergency" element={<EmergencyContacts />} />
 
-          <Route path="/track" element={<LiveTracking />} />
-
-          <Route path="/sos" element={<SOS />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/emergency" element={<EmergencyContacts />} />
-
-          <Route path="/history" element={<AlertHistory />} />
-          <Route path="/profile" element={<TeenProfile />} />
-          <Route path="/notifications" element={<Notifications />} />
-
-        </Routes>
-      </div>
+        <Route path="/history" element={<AlertHistory />} />
+        <Route path="/profile" element={<TeenProfile />} />
+        <Route path="/notifications" element={<Notifications />} />
+      </Routes>
     </BrowserRouter>
   );
 }
