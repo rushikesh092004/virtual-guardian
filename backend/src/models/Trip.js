@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const tripSchema = new mongoose.Schema({
   title: String,
@@ -6,15 +6,18 @@ const tripSchema = new mongoose.Schema({
   expiresAt: Number,
   lastLocation: {
     lat: Number,
-    lon: Number
+    lon: Number,
+    accuracy: Number,
+    timestamp: Number,
   },
   contacts: [
     {
       type: { type: String },
-      value: String
-    }
+      value: String,
+    },
   ],
-  alertedAt: Number
+  alertedAt: Number,
+  startedAt: Number,
 });
 
-export default mongoose.model("Trip", tripSchema);
+module.exports = mongoose.model("Trip", tripSchema);
