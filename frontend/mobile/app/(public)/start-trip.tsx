@@ -1,5 +1,5 @@
 // app/(public)/start-trip.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+
 import { router } from "expo-router";
 
 import {
@@ -22,48 +23,43 @@ import { createTrip } from "../../src/services/api";
 import { useTrip } from "../../src/hooks/useTrip";
 import { loadContacts } from "../../src/storage/contacts";
 
-import SafetyBanner from "../../src/components/SafetyBanner";
-import { useOfflineStatus } from "../../src/hooks/useOfflineStatus";
-
 export default function StartTrip() {
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("15");
   const [loading, setLoading] = useState(false);
 
   const { startTrip } = useTrip();
-  const { needsBanner } = useOfflineStatus();
 
   async function handleStart() {
     if (!title.trim()) {
-      alert("Please enter a trip title");
+      alert("Please enter a trip title.");
       return;
     }
 
     setLoading(true);
 
+    const granted = await requestLocationPermission();
+    if (!granted) {
+      alert("Location permission is required.");
+      setLoading(false);
+      return;
+    }
+
+    const initialLocation = await getCurrentLocation();
+    const contacts = await loadContacts();
+
+    const payload = {
+      title,
+      durationMinutes: Number(duration),
+      contacts: contacts.map((c) => ({ type: c.type, value: c.value })),
+      initialLocation,
+    };
+
     try {
-      const granted = await requestLocationPermission();
-      if (!granted) {
-        alert("Location permission is required.");
-        setLoading(false);
-        return;
-      }
-
-      const initialLocation = await getCurrentLocation();
-      const contacts = await loadContacts();
-
-      const payload = {
-        title,
-        durationMinutes: Number(duration),
-        contacts: contacts.map((c) => ({ type: c.type, value: c.value })),
-        initialLocation,
-      };
-
       const response = await createTrip(payload);
 
       if (!response) {
-        alert("Trip created offline. Will sync automatically when internet is available.");
-
+        alert("Trip created offline. Will sync automatically.");
         const expires = Date.now() + Number(duration) * 60000;
 
         startTrip({
@@ -73,11 +69,7 @@ export default function StartTrip() {
           status: "running",
         });
 
-        startAdaptiveLocationUpdates({
-          tripId: null,
-        });
-
-        router.push("/(trip)/countdown");
+        router.replace("/(trip)/countdown");
         setLoading(false);
         return;
       }
@@ -95,13 +87,13 @@ export default function StartTrip() {
         tripId: data.tripId,
       });
 
-      router.push("/(trip)/countdown");
+      router.replace("/(trip)/countdown");
     } catch (err) {
-      console.error("StartTrip error:", err);
-      alert("Unexpected error occurred while starting trip.");
-    } finally {
-      setLoading(false);
+      console.error(err);
+      alert("Unexpected error occurred.");
     }
+
+    setLoading(false);
   }
 
   return (
@@ -109,8 +101,6 @@ export default function StartTrip() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <SafetyBanner visible={needsBanner} />
-
       <Text style={styles.heading}>Start a Trip</Text>
 
       <TextInput
@@ -130,24 +120,36 @@ export default function StartTrip() {
         onChangeText={setDuration}
       />
 
-      <TouchableOpacity style={styles.btn} onPress={handleStart} disabled={loading}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={handleStart}
+        disabled={loading}
+      >
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
           <Text style={styles.btnText}>Begin Trip</Text>
         )}
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/(public)/contacts" as unknown as any)}>
-        <Text style={{ color: "#1e90ff", marginTop: 20 }}>Manage Contacts</Text>
-      </TouchableOpacity>
 
+      <TouchableOpacity
+        style={styles.contactsBtn}
+        onPress={() => router.push("/(public)/start-trip")}
+      >
+        <Text style={styles.contactsText}>Manage Emergency Contacts</Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 22, paddingTop: 90, backgroundColor: "#000" },
-  heading: { color: "#fff", fontSize: 28, marginBottom: 20, fontWeight: "600" },
+  container: { flex: 1, backgroundColor: "#000", padding: 22, paddingTop: 90 },
+  heading: {
+    color: "#fff",
+    fontSize: 28,
+    marginBottom: 20,
+    fontWeight: "600",
+  },
   input: {
     backgroundColor: "#141414",
     color: "#fff",
@@ -160,8 +162,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e90ff",
     paddingVertical: 16,
     borderRadius: 12,
-    marginTop: 20,
     alignItems: "center",
+    marginTop: 10,
   },
   btnText: { color: "#fff", fontSize: 18, fontWeight: "600" },
+  contactsBtn: { marginTop: 30 },
+  contactsText: { color: "#1e90ff", fontSize: 16 },
 });

@@ -27,22 +27,21 @@ export default function ContactsScreen() {
 
   useEffect(() => {
     async function load() {
-      const list = await loadContacts();
-      setContacts(list);
+      setContacts(await loadContacts());
     }
     load();
   }, []);
 
   async function handleAdd() {
     if (!value.trim()) {
-      alert("Enter a valid phone number or email");
+      alert("Enter a valid phone number or email.");
       return;
     }
 
     if (type === "sms") {
       const phoneRegex = /^[0-9+\-\s]{6,15}$/;
       if (!phoneRegex.test(value)) {
-        alert("Invalid phone number format");
+        alert("Invalid phone number.");
         return;
       }
     }
@@ -50,7 +49,7 @@ export default function ContactsScreen() {
     if (type === "email") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) {
-        alert("Invalid email format");
+        alert("Invalid email.");
         return;
       }
     }
@@ -62,28 +61,22 @@ export default function ContactsScreen() {
     };
 
     await addContact(newContact);
-    const updated = await loadContacts();
-    setContacts(updated);
+    setContacts(await loadContacts());
     setValue("");
   }
 
-  function handleDelete(id: string) {
-    Alert.alert(
-      "Remove Contact",
-      "Are you sure you want to delete this contact?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            await removeContact(id);
-            const updated = await loadContacts();
-            setContacts(updated);
-          },
+  function confirmDelete(id: string) {
+    Alert.alert("Remove Contact", "Are you sure?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          await removeContact(id);
+          setContacts(await loadContacts());
         },
-      ]
-    );
+      },
+    ]);
   }
 
   return (
@@ -93,7 +86,7 @@ export default function ContactsScreen() {
     >
       <Text style={styles.heading}>Emergency Contacts</Text>
 
-      <View style={styles.row}>
+      <View style={styles.typeRow}>
         <TouchableOpacity
           style={[styles.typeBtn, type === "sms" && styles.typeActive]}
           onPress={() => setType("sms")}
@@ -111,9 +104,7 @@ export default function ContactsScreen() {
 
       <TextInput
         style={styles.input}
-        placeholder={
-          type === "sms" ? "Enter phone number" : "Enter email address"
-        }
+        placeholder={type === "sms" ? "Phone number" : "Email address"}
         placeholderTextColor="#666"
         value={value}
         onChangeText={setValue}
@@ -136,7 +127,7 @@ export default function ContactsScreen() {
 
             <TouchableOpacity
               style={styles.deleteBtn}
-              onPress={() => handleDelete(item.id)}
+              onPress={() => confirmDelete(item.id)}
             >
               <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
@@ -156,14 +147,19 @@ export default function ContactsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#000", padding: 22, paddingTop: 90 },
-  heading: { color: "#fff", fontSize: 28, marginBottom: 20, fontWeight: "600" },
+  heading: {
+    color: "#fff",
+    fontSize: 28,
+    marginBottom: 20,
+    fontWeight: "600",
+  },
 
-  row: { flexDirection: "row", marginBottom: 20, gap: 10 },
+  typeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
   typeBtn: {
     flex: 1,
-    backgroundColor: "#111",
+    backgroundColor: "#1a1a1a",
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: "center",
   },
   typeActive: { backgroundColor: "#1e90ff" },
@@ -172,14 +168,14 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#141414",
     color: "#fff",
-    padding: 14,
     borderRadius: 12,
+    padding: 14,
     marginBottom: 18,
     fontSize: 16,
   },
 
   addBtn: {
-    backgroundColor: "#27ae60",
+    backgroundColor: "#2ecc71",
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
@@ -187,22 +183,18 @@ const styles = StyleSheet.create({
   },
   addText: { color: "#fff", fontSize: 17, fontWeight: "600" },
 
-  listHeading: {
-    color: "#888",
-    fontSize: 16,
-    marginBottom: 10,
-  },
+  listHeading: { color: "#888", fontSize: 16, marginBottom: 10 },
 
   contactCard: {
     backgroundColor: "#111",
     padding: 16,
-    borderRadius: 10,
+    borderRadius: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
   },
   contactText: { color: "#fff", fontSize: 16 },
-  deleteBtn: { paddingHorizontal: 12 },
+  deleteBtn: {},
   deleteText: { color: "#e74c3c", fontSize: 15 },
 
   homeBtn: {
@@ -210,7 +202,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 30,
   },
   homeText: { color: "#fff", fontSize: 18, fontWeight: "600" },
 });

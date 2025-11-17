@@ -1,29 +1,38 @@
 // app/_layout.tsx
 import React, { useEffect, useState } from "react";
 import { Slot, SplashScreen } from "expo-router";
-import "../global.css";
+import { router } from "expo-router";
 
 import { hasOnboarded } from "../src/storage/app";
-import { configureChannels, attachNotificationListeners } from "../src/services/notifications";
+import {
+  configureChannels,
+  attachNotificationListeners,
+} from "../src/services/notifications";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [ready, setReady] = useState(false);
-  const [onboarded, setOnboarded] = useState<boolean | null>(null);
+  const [initialRouteSet, setInitialRouteSet] = useState(false);
 
   useEffect(() => {
     let removeListeners: (() => void) | null = null;
 
     async function init() {
       await configureChannels();
-
       removeListeners = attachNotificationListeners();
 
-      const ob = await hasOnboarded();
-      setOnboarded(ob);
+      const onboarded = await hasOnboarded();
 
-      setReady(true);
+      // Wait 1 frame to let router mount
+      requestAnimationFrame(() => {
+        if (onboarded) {
+          router.replace("(public)/start-trip");
+        } else {
+          router.replace("(onboarding)/welcome");
+        }
+        setInitialRouteSet(true);
+      });
+
       await SplashScreen.hideAsync();
     }
 
@@ -34,14 +43,7 @@ export default function RootLayout() {
     };
   }, []);
 
-  if (!ready || onboarded === null) return null;
+  if (!initialRouteSet) return null;
 
-  // Routing
-  return (
-    <Slot
-      initialRouteName={
-        onboarded ? "/(public)/start-trip" : "/(onboarding)/welcome"
-      }
-    />
-  );
+  return <Slot />;
 }
