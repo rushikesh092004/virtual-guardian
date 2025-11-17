@@ -1,64 +1,53 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import "../styles/alertHistory.css";
-import { useEffect } from "react";
+import "../styles/history.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AlertHistory() {
-    useEffect(() => {
-  const timer = setTimeout(() => {
-    window.location.href = "/profile";
-  }, 2000);
-  return () => clearTimeout(timer);
-}, []);
+  const navigate = useNavigate();
 
   const alerts = [
     {
-      type: "SOS Alert",
+      title: "🚨 SOS Alert Sent",
       time: "Today • 10:24 AM",
-      location: "Pune Station Road",
-      status: "Resolved",
     },
     {
-      type: "SOS Alert",
+      title: "📍 Location Shared",
+      time: "Yesterday • 9:10 PM",
+    },
+    {
+      title: "🛰 Tracking Started",
       time: "Yesterday • 8:43 PM",
-      location: "Kharadi, Pune",
-      status: "Pending",
     },
     {
-      type: "Location Shared",
-      time: "Yesterday • 5:30 PM",
-      location: "Viman Nagar, Pune",
-      status: "Resolved",
-    },
+      title: "📍 Location Updated",
+      time: "Yesterday • 7:30 PM",
+    }
   ];
 
   return (
-    <>
-      <Navbar />
+    <div className="history-wrapper">
+      <div className="history-card">
 
-      <div className="history-wrapper">
-        <div className="history-card">
-          <h2 className="history-title">Alert History</h2>
+        <h2 className="history-title">Alert History</h2>
 
-          {alerts.map((a, index) => (
+        {/* ALERT LIST */}
+        <div className="history-list">
+          {alerts.map((item, index) => (
             <div className="history-item" key={index}>
-              <div>
-                <h3 className="alert-type">{a.type}</h3>
-                <p className="alert-time">{a.time}</p>
-                <p className="alert-location">📍 {a.location}</p>
-              </div>
-
-              <span
-                className={`status-badge ${
-                  a.status === "Resolved" ? "resolved" : "pending"
-                }`}
-              >
-                {a.status}
-              </span>
+              <h3>{item.title}</h3>
+              <p className="history-time">{item.time}</p>
             </div>
           ))}
         </div>
+
+        {/* BACK BUTTON */}
+        <button 
+          className="back-btn"
+          onClick={() => navigate("/user/dashboard")}
+        >
+          ← Back to Dashboard
+        </button>
+
       </div>
-    </>
+    </div>
   );
 }

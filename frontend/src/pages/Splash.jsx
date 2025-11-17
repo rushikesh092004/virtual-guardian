@@ -1,32 +1,28 @@
 import React, { useEffect } from "react";
 import "../styles/splash.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Splash() {
-  useEffect(() => {
-  const timer = setTimeout(() => {
-    window.location.href = "/home";
-  }, 2000);
-  return () => clearTimeout(timer);
-}, []);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/home");   // Smooth React navigation
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   return (
     <div className="splash-container">
       <div className="splash-content">
-        
-        {/* App Logo */}
         <img
           src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png"
-          alt="App Logo"
+          alt="logo"
           className="splash-logo"
         />
-
-        {/* App Name */}
         <h1 className="splash-title">Virtual Guardian</h1>
-
-        {/* Loading Animation */}
         <div className="loader"></div>
-
       </div>
     </div>
   );

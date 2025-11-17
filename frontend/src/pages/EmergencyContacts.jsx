@@ -1,85 +1,120 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import "../styles/emergency.css";
-import { useEffect } from "react";
 
 export default function EmergencyContacts() {
-    useEffect(() => {
-  const timer = setTimeout(() => {
-    window.location.href = "/history";
-  }, 2000);
-  return () => clearTimeout(timer);
-}, []);
+  const [contacts, setContacts] = useState([]);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
-  const [contacts, setContacts] = useState([
-    { name: "Rahul Patel", phone: "+91 98765 43210" },
-    { name: "Priya Sharma", phone: "+91 98765 11223" }
-  ]);
+  const [editingIndex, setEditingIndex] = useState(null);
 
-  const [newName, setNewName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
+  // Load saved contacts from localStorage
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("emergencyContacts")) || [];
+    setContacts(saved);
+  }, []);
 
-  const addContact = () => {
-    if (newName.trim() === "" || newPhone.trim() === "") return;
-    setContacts([...contacts, { name: newName, phone: newPhone }]);
-    setNewName("");
-    setNewPhone("");
+  // Save contacts to localStorage
+  useEffect(() => {
+    localStorage.setItem("emergencyContacts", JSON.stringify(contacts));
+  }, [contacts]);
+
+  const handleAddContact = (e) => {
+    e.preventDefault();
+    if (!name || !phone) return alert("Please fill all fields");
+
+    if (editingIndex !== null) {
+      // edit mode
+      const updated = [...contacts];
+      updated[editingIndex] = { name, phone };
+      setContacts(updated);
+      setEditingIndex(null);
+    } else {
+      // add mode
+      setContacts([...contacts, { name, phone }]);
+    }
+
+    setName("");
+    setPhone("");
   };
 
-  const removeContact = (index) => {
-    const updated = contacts.filter((_, i) => i !== index);
-    setContacts(updated);
+  const handleDelete = (index) => {
+    if (window.confirm("Delete this contact?")) {
+      const updated = contacts.filter((_, i) => i !== index);
+      setContacts(updated);
+    }
+  };
+
+  const handleEdit = (index) => {
+    const contact = contacts[index];
+    setName(contact.name);
+    setPhone(contact.phone);
+    setEditingIndex(index);
   };
 
   return (
     <>
       <Navbar />
-
       <div className="em-wrapper">
         <div className="em-card">
-          <h2>Emergency Contacts</h2>
+          <h2 className="em-title">Emergency Contacts</h2>
 
-          {/* Add Contact Section */}
-          <div className="em-add-section">
-            <h3>Add New Contact</h3>
-
+          {/* ADD / EDIT FORM */}
+          <form onSubmit={handleAddContact} className="em-form">
             <input
               type="text"
-              placeholder="Enter Name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Contact Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
 
             <input
               type="text"
-              placeholder="Enter Phone Number"
-              value={newPhone}
-              onChange={(e) => setNewPhone(e.target.value)}
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
             />
 
-            <button className="btn-add" onClick={addContact}>
-              Add Contact
+            <button className="em-add-btn" type="submit">
+              {editingIndex !== null ? "Update Contact" : "Add Contact"}
             </button>
-          </div>
+          </form>
 
-          <hr />
+          <hr className="divider" />
 
-          {/* Contact List */}
-          <h3>Saved Contacts</h3>
-
+          {/* CONTACT LIST */}
           <div className="em-list">
-            {contacts.map((c, i) => (
-              <div className="em-item" key={i}>
-                <div>
-                  <p className="em-name">{c.name}</p>
-                  <p className="em-phone">{c.phone}</p>
-                </div>
+            {contacts.length === 0 ? (
+              <p className="no-contact">No emergency contacts added yet.</p>
+            ) : (
+              contacts.map((contact, index) => (
+                <div className="em-item" key={index}>
+                  <div className="em-info">
+                    <h3>{contact.name}</h3>
+                    <p>{contact.phone}</p>
+                  </div>
 
-                <button className="btn-delete" onClick={() => removeContact(i)}>
-                  Delete
-                </button>
-              </div>
-            ))}
+                  <div className="em-actions">
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEdit(index)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(index)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

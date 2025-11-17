@@ -1,12 +1,7 @@
 import "./../styles/landing.css";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function Landing() {
-
-
-  
-
   return (
     <div className="landing-wrapper">
       <div className="landing-card">
