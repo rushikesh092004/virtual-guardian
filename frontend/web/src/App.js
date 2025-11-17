@@ -17,6 +17,11 @@ import EmergencyContacts from "./pages/EmergencyContacts";
 import AlertHistory from "./pages/AlertHistory";
 import TeenProfile from "./pages/TeenProfile";
 import Notifications from "./pages/Notifications";
+import StartJourney from "./pages/StartJourney";
+import SafetyCheck from "./pages/SafetyCheck";
+import AlertSent from "./pages/AlertSent";
+
+
 
 export default function App() {
   return (
@@ -39,6 +44,14 @@ export default function App() {
         <Route path="/history" element={<AlertHistory />} />
         <Route path="/profile" element={<TeenProfile />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/journey" element={<StartJourney />} />
+        <Route path="/safety-check" element={<SafetyCheck />} />
+        <Route path="/alert-sent" element={<AlertSent />} />
+        <Route path="/journey" element={<StartJourney />} />
+        <Route path="/safety-check" element={<SafetyCheck />} />
+        <Route path="/alert-sent" element={<AlertSent />} />
+
+
       </Routes>
     </BrowserRouter>
   );
