@@ -1,0 +1,70 @@
+.alert-wrapper {
+  max-width: 480px;
+  margin: 140px auto;
+  padding: 20px;
+}
+
+.alert-wrapper h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* RED ALERT BOX */
+.alert-box {
+  background: #ffe1e1;
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.alert-box h3 {
+  color: #d62828;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.alert-box p {
+  color: #8b0000;
+  margin: 6px 0;
+}
+
+/* CONTACT BOX */
+.contact-box {
+  background: #e7ffec;
+  padding: 18px;
+  border-radius: 14px;
+  margin-top: 10px;
+}
+
+.contact-box p {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+/* VIEW BUTTON */
+.view-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  background: white;
+  border: 2px solid #111;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.view-btn:hover {
+  background: #111;
+  color: white;
+}
+
+.footer {
+  margin-top: 18px;
+  font-size: 14px;
+  text-align: center;
+  color: #4b5563;
+}

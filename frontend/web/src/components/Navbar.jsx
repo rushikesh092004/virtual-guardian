@@ -19,6 +19,10 @@ export default function Navbar() {
         <Link to="/profile">Profile</Link>
         <Link to="/notifications">Notifications</Link>
         <Link to="/" className="logout-btn">Logout</Link>
+        <Link to="/journey" className="nav-item">Journey</Link>
+        <Link to="/journey" className="nav-item">Journey</Link>
+
+
       </div>
 
     </nav>
