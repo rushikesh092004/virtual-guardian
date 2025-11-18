@@ -3,90 +3,109 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/journey.css";
 
 export default function StartJourney() {
-    // TIMER WORKFLOW (NO immediate safety alert)
-useEffect(() => {
-  if (!isRunning || remaining === null) return;
 
-  // Timer ends → Force safety check
-  if (remaining === 0) {
-    navigate("/safety-check", { state: { resume: true } });
-    return;
-  }
-
-  // Safety check ONLY after some time has passed (not immediately)
-  if (remaining < duration * 60 && remaining % 10 === 0)
-{
-    navigate("/safety-check", { state: { resume: true } });
-  }
-
-  const t = setTimeout(() => setRemaining(remaining - 1), 1000);
-  return () => clearTimeout(t);
-}, [remaining, isRunning]);
-
+  // ✅ MUST COME FIRST — before useEffect
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [duration, setDuration] = useState(60);       // minutes
-  const [remaining, setRemaining] = useState(null);   // timer seconds
+  const [duration, setDuration] = useState(60);
+  const [remaining, setRemaining] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [warnings, setWarnings] = useState(0);
 
-  // If user clicked “I’m Safe”, resume journey timer
+  console.log("Journey Render State:", {
+    duration,
+    remaining,
+    isRunning,
+    warnings,
+    location: location.state
+  });
+
+  // ✅ RESUME TIMER WHEN USER RETURNS FROM SAFETY CHECK
   useEffect(() => {
-    if (location.state?.continue === true) {
+    if (location.state?.resumeTimer) {
+      console.log("⏳ Resuming timer...");
       setIsRunning(true);
     }
   }, [location]);
 
+  // Resume journey after "I'm Safe"
+  useEffect(() => {
+    if (location.state?.continue) {
+      setIsRunning(true);
+      setWarnings(location.state?.warnings ?? warnings);
+      console.log("Resuming Journey with warnings:", location.state?.warnings);
+    }
+  }, [location]);
+
+  // If SOS triggered → stop everything
+  useEffect(() => {
+    if (location.state?.finalSOS) {
+      console.log("❗ Final SOS detected — stopping journey");
+      setIsRunning(false);
+      setRemaining(null);
+      setWarnings(0);
+    }
+  }, [location]);
+
   const startJourney = () => {
-    setRemaining(duration * 60); 
+    setRemaining(duration * 60);
     setIsRunning(true);
+    setWarnings(0);
+    console.log("Journey Started");
   };
 
   // TIMER WORKFLOW
   useEffect(() => {
     if (!isRunning || remaining === null) return;
 
+    // Timer ended → safety check
     if (remaining === 0) {
-      navigate("/safety-check", { state: { resume: true } });
+      navigate("/safety-check", { state: { warnings } });
       return;
     }
 
-    // Safety check every 60 sec (you can increase later)
-    if (remaining % 60 === 0) {
-      navigate("/safety-check", { state: { resume: true } });
+    // Safety check every 30 sec
+    if (remaining % 30 === 0 && remaining !== duration * 60) {
+      console.log("⏳ Triggering safety check due to interval");
+      navigate("/safety-check", { state: { resumeTimer: true, warnings } });
     }
 
-    const t = setTimeout(() => setRemaining(remaining - 1), 1000);
-    return () => clearTimeout(t);
-  }, [remaining, isRunning, navigate]);
+    const timer = setTimeout(() => setRemaining(remaining - 1), 1000);
+    return () => clearTimeout(timer);
+
+  }, [remaining, isRunning, warnings, duration, navigate]);
 
   return (
     <div className="journey-wrapper">
-      <h2>Virtual Guardian - Trip Monitor</h2>
+      <h2 className="trip-title">Virtual Guardian - Trip Monitor</h2>
 
       {!isRunning && (
-        <>
+        <div className="start-container">
           <div className="start-circle" onClick={startJourney}>
-            <p>Start Journey</p>
+            Start Journey
           </div>
 
-          <label>Trip Duration (minutes)</label>
+          <label className="duration-label">Trip Duration (minutes)</label>
           <input
+            className="duration-input"
             type="number"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
           />
-        </>
+        </div>
       )}
 
-      {isRunning && (
+      {isRunning && remaining !== null && (
         <div className="timer-box">
           <h3>Journey Active</h3>
+
           <div className="circular">
-            <p>{Math.floor(remaining / 60)}:{("0" + (remaining % 60)).slice(-2)}</p>
+            {Math.floor(remaining / 60)}:
+            {("0" + (remaining % 60)).slice(-2)}
           </div>
 
-          <p>You are being monitored</p>
+          <p className="warning-text">Warnings: {warnings} / 3</p>
 
           <button className="stop-btn" onClick={() => setIsRunning(false)}>
             Stop Journey

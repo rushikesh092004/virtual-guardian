@@ -1,37 +1,43 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import "../styles/emergency.css";
+import { useNavigate } from "react-router-dom";
 
 export default function EmergencyContacts() {
+  const navigate = useNavigate();
+
   const [contacts, setContacts] = useState([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
   const [editingIndex, setEditingIndex] = useState(null);
 
-  // Load saved contacts from localStorage
+  // Load saved contacts on mount
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("emergencyContacts")) || [];
     setContacts(saved);
   }, []);
 
-  // Save contacts to localStorage
+  // Save contacts
   useEffect(() => {
     localStorage.setItem("emergencyContacts", JSON.stringify(contacts));
   }, [contacts]);
 
   const handleAddContact = (e) => {
     e.preventDefault();
-    if (!name || !phone) return alert("Please fill all fields");
+
+    if (!name.trim() || !phone.trim()) {
+      alert("Please fill all fields");
+      return;
+    }
 
     if (editingIndex !== null) {
-      // edit mode
+      // Update
       const updated = [...contacts];
       updated[editingIndex] = { name, phone };
       setContacts(updated);
       setEditingIndex(null);
     } else {
-      // add mode
+      // Add new
       setContacts([...contacts, { name, phone }]);
     }
 
@@ -39,28 +45,41 @@ export default function EmergencyContacts() {
     setPhone("");
   };
 
+  const handleEdit = (index) => {
+    setName(contacts[index].name);
+    setPhone(contacts[index].phone);
+    setEditingIndex(index);
+  };
+
   const handleDelete = (index) => {
     if (window.confirm("Delete this contact?")) {
-      const updated = contacts.filter((_, i) => i !== index);
-      setContacts(updated);
+      setContacts(contacts.filter((_, i) => i !== index));
     }
   };
 
-  const handleEdit = (index) => {
-    const contact = contacts[index];
-    setName(contact.name);
-    setPhone(contact.phone);
-    setEditingIndex(index);
+  const handleContinue = () => {
+    if (contacts.length === 0) {
+      alert("Please add at least one emergency contact.");
+      return;
+    }
+
+    localStorage.setItem("emergencySaved", "true");
+
+    // ✔ After Emergency Page → Go to J O U R N E Y Page
+    navigate("/journey");
   };
 
   return (
     <>
       <Navbar />
+
       <div className="em-wrapper">
         <div className="em-card">
-          <h2 className="em-title">Emergency Contacts</h2>
 
-          {/* ADD / EDIT FORM */}
+          <h2 className="em-title">Emergency Contacts</h2>
+          <p className="em-sub">Add people who will be notified during emergencies.</p>
+
+          {/* FORM */}
           <form onSubmit={handleAddContact} className="em-form">
             <input
               type="text"
@@ -98,17 +117,10 @@ export default function EmergencyContacts() {
                   </div>
 
                   <div className="em-actions">
-                    <button
-                      className="btn-edit"
-                      onClick={() => handleEdit(index)}
-                    >
+                    <button className="btn-edit" onClick={() => handleEdit(index)}>
                       Edit
                     </button>
-
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDelete(index)}
-                    >
+                    <button className="btn-delete" onClick={() => handleDelete(index)}>
                       Delete
                     </button>
                   </div>
@@ -116,6 +128,12 @@ export default function EmergencyContacts() {
               ))
             )}
           </div>
+
+          {/* Continue Button */}
+          <button className="em-continue-btn" onClick={handleContinue}>
+            Save & Continue →
+          </button>
+
         </div>
       </div>
     </>

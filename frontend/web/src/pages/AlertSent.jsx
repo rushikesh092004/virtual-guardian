@@ -1,33 +1,30 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/alert.css";
 
 export default function AlertSent() {
+  const location = useLocation();
+  const isFinal = location.state?.finalSOS;
 
   useEffect(() => {
-    console.log("🚨 SOS Triggered! Sending alert to guardian...");
+    console.log("🚨 FINAL SOS TRIGGERED");
+
+    // TODO: send SMS/email/WhatsApp alert here
+
   }, []);
 
   return (
     <div className="alert-wrapper">
-      <h2>Alert Sent</h2>
+      <h2>{isFinal ? "Emergency Alert Sent" : "Alert Sent"}</h2>
 
       <div className="alert-box">
-        <h3>🚨 Emergency Alert Triggered</h3>
-        <p>No response received to safety check</p>
-        <p>📍 Last Known Location: Your current location</p>
+        <h3>🚨 {isFinal ? "User Unresponsive — SOS Triggered" : "Alert Triggered"}</h3>
+        <p>No response received after 3 warnings.</p>
+        <p>📍 Last known location will be sent to guardian.</p>
       </div>
-
-      <h3>Emergency Contacts Notified</h3>
-
-      <div className="contact-box">
-        <p>Name: Guardian</p>
-        <p>Status: ✔ Delivered</p>
-      </div>
-
-      <button className="view-btn">👁 View Guardian's View</button>
 
       <p className="footer">
-        Your emergency contacts have been notified with your location & status.
+        Emergency contacts have been notified.
       </p>
     </div>
   );
