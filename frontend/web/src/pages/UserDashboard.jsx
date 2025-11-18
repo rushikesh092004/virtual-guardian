@@ -41,12 +41,25 @@ export default function UserDashboard() {
             </button>
           </div>
 
+          {/* LIVE LOCATION SHARING CARD — ⭐ NEW ⭐ */}
+          <div className="dash-card">
+            <h3>🔵 Live Location Sharing</h3>
+            <p>Share your live location with your guardian</p>
+            <button 
+              className="dash-btn" 
+              onClick={() => navigate("/live-share")}
+            >
+              Share Live Location
+            </button>
+          </div>
+
           {/* GUARDIAN CARD */}
           <div className="dash-card">
             <h3>👤 Assigned Guardian</h3>
             <p>Name: Rahul Patel</p>
             <p>📞 +91 98765 43210</p>
           </div>
+
         </div>
       </div>
     </div>

@@ -39,3 +39,17 @@
 .logout-btn:hover {
   background: #c62828;
 }
+
+
+.nav-noti {
+  position: relative;
+}
+
+.badge {
+  background: #d62828;
+  color: white;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
