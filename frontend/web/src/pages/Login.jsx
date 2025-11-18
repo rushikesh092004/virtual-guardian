@@ -10,10 +10,11 @@ export default function Login() {
     e.preventDefault();
 
     if (role === "guardian") {
-      navigate("/guardian/dashboard");
-    } else {
-      navigate("/user/dashboard");
-    }
+  navigate("/guardian/dashboard");
+} else {
+  navigate("/permissions");   // 👈 USER goes to Permissions FIRST
+}
+
   };
 
   return (
